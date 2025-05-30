@@ -10,12 +10,10 @@ export async function graphqlUiGenerator(
   tree: Tree,
   options: GraphqlUiGeneratorSchema
 ) {
-  const { name, tags, templatePath } = options;
-  await libraryGenerator(tree, {
+  const { name, tags, templatePath } = options;  await libraryGenerator(tree, {
     ...options,
     name: `${name}-graphql-ui`,
     directory: `libs/${name}/graphql-ui`,
-    projectNameAndRootFormat: 'as-provided',
     tags: tags ? `type:ui,${tags}` : `type:ui`,
   });
   tree.delete(`libs/${name}/graphql-ui/src/lib`);

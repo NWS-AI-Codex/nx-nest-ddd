@@ -11,12 +11,10 @@ export async function infrastructureGenerator(
   tree: Tree,
   options: InfrastructureGeneratorSchema
 ) {
-  const { name, tags, templatePath } = options;
-  await libraryGenerator(tree, {
+  const { name, tags, templatePath } = options;  await libraryGenerator(tree, {
     ...options,
     name: `${name}-infrastructure`,
     directory: `libs/${name}/infrastructure`,
-    projectNameAndRootFormat: 'as-provided',
     tags: tags ? `type:infrastructure,${tags}` : `type:infrastructure`,
   });
   tree.delete(`libs/${name}/infrastructure/src/lib`);

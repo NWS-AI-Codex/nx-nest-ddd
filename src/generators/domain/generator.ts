@@ -12,12 +12,10 @@ export async function domainGenerator(
   tree: Tree,
   options: DomainGeneratorSchema
 ) {
-  const { name, tags, templatePath } = options;
-  await libraryGenerator(tree, {
+  const { name, tags, templatePath } = options;  await libraryGenerator(tree, {
     ...options,
     name: `${name}-domain`,
     directory: `libs/${name}/domain`,
-    projectNameAndRootFormat: 'as-provided',
     tags: tags ? `type:domain,${tags}` : `type:domain`,
   });
   tree.delete(`libs/${name}/domain/src/lib`);

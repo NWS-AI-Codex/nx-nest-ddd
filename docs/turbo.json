@@ -1,0 +1,12 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"extends": ["//"],
+	"tasks": {
+		"docs:build": {
+			"outputs": ["dist/**"],
+			"env": ["GITHUB_PAGES"]
+		},
+		"lint": {},
+		"format": {}
+	}
+}

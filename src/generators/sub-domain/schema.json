@@ -20,16 +20,10 @@
     "prefixImport": {
       "description": "The library name used to import it, like @myorg.",
       "type": "string"
-    },
-    "directory": {
+    },    "directory": {
       "description": "A directory where the application is placed.",
       "type": "string",
       "alias": "dir"
-    },
-    "projectNameAndRootFormat": {
-      "description": "Whether to generate the project name and root directory as provided (`as-provided`) or generate them composing their values and taking the configured layout into account (`derived`).",
-      "type": "string",
-      "enum": ["as-provided", "derived"]
     },
     "tags": {
       "description": "Add tags to the application (used for linting).",

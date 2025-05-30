@@ -11,12 +11,10 @@ export async function applicationGenerator(
   tree: Tree,
   options: ApplicationGeneratorSchema
 ) {
-  const { name, tags, templatePath } = options;
-  await libraryGenerator(tree, {
+  const { name, tags, templatePath } = options;  await libraryGenerator(tree, {
     ...options,
     name: `${name}-application`,
     directory: `libs/${name}/application`,
-    projectNameAndRootFormat: 'as-provided',
     tags: tags ? `type:application,${tags}` : `type:application`,
   });
   tree.delete(`libs/${name}/application/src/lib`);

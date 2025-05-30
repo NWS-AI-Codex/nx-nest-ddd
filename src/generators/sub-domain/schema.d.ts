@@ -1,9 +1,7 @@
 export interface SubDomainGeneratorSchema {
   name: string;
-  templatePath?: string;
-  prefixImport?: string;
+  templatePath?: string;  prefixImport?: string;
   directory?: string;
-  projectNameAndRootFormat?: ProjectNameAndRootFormat;
   linter?: Linter;
   skipFormat?: boolean;
   skipPackageJson?: boolean;

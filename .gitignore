@@ -39,6 +39,9 @@ testem.log
 Thumbs.db
 
 .nx/cache
+.nx/workspace-data
 
 /libs
 /apps
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md

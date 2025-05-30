@@ -15,13 +15,10 @@ export async function subDomainGenerator(
   const {
     name,
     templatePath,
-    projectNameAndRootFormat,
     directory,
     prefixImport,
-  } = options;
-  await applicationGenerator(tree, {
+  } = options;  await applicationGenerator(tree, {
     ...options,
-    projectNameAndRootFormat: projectNameAndRootFormat || 'as-provided',
     name: `${name}-api`,
     directory: directory || `apps/${name}/api`,
     tags: 'scope:app',

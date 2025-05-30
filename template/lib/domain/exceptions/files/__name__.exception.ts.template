@@ -1,5 +1,13 @@
 export class <%= hyphenToCapital(name) %>Exception extends Error {
-  constructor() {
-    super("<%= hyphenToSnakeCase(name) %>");
-  } 
+  public readonly code: string;
+
+  constructor(message: string, public readonly id?: string) {
+    super(message);
+    this.name = '<%= hyphenToCapital(name) %>Exception';
+    this.code = '<%= hyphenToSnakeCase(name) %>';
+  }
+
+  static because(reason: string, id?: string): <%= hyphenToCapital(name) %>Exception {
+    return new <%= hyphenToCapital(name) %>Exception(reason, id);
+  }
 }

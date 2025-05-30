@@ -1,14 +1,28 @@
-import { QueryHandler } from '@nestjs/cqrs';
-
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { <%= hyphenToCapital(name) %>, <%= hyphenToCapital(name) %>Id } from '@domain/aggregates/<%= name %>.aggregate';
+import { <%= hyphenToCapital(name) %>Repository } from '@domain/repositories/<%= name %>.repository';
 import { <%= hyphenToCapital(name) %>Query } from './<%= name %>.query';
 
 @QueryHandler(<%= hyphenToCapital(name) %>Query)
-export class <%= hyphenToCapital(name) %>QueryHandler {
-  constructor() {
-    // Initialize
-  }
+export class <%= hyphenToCapital(name) %>QueryHandler implements IQueryHandler<<%= hyphenToCapital(name) %>Query> {
+  constructor(
+    private readonly repository: <%= hyphenToCapital(name) %>Repository
+  ) {}
 
-  protected async handle(query: <%= hyphenToCapital(name) %>Query): Promise<unknown> {
-    return;
+  async execute(query: <%= hyphenToCapital(name) %>Query): Promise<<%= hyphenToCapital(name) %> | <%= hyphenToCapital(name) %>[]> {
+    if (query.id) {
+      const id = <%= hyphenToCapital(name) %>Id.from(query.id);
+      return this.repository.getById(id);
+    }
+
+    if (query.filter) {
+      // Add filter logic here if needed
+      const ids = query.filter.ids as string[];
+      if (ids?.length) {
+        return this.repository.getByIds(ids.map(<%= hyphenToCapital(name) %>Id.from));
+      }
+    }
+
+    return [];
   }
 }

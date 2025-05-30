@@ -1,7 +1,7 @@
-export class <%= hyphenToCapital(name) %>Event {
-  public readonly value1: unknown;
+import { DomainEvent } from '@ocoda/event-sourcing';
 
-  constructor(props: <%= hyphenToCapital(name) %>Event) {
-    this.value1 = props.value1;
+export class <%= hyphenToCapital(name) %>CreatedEvent extends DomainEvent {
+  constructor(public readonly id: string) {
+    super();
   }
 }
