@@ -1,16 +1,22 @@
-export interface <%= hyphenToCapital(name) %>Props {
-  props: unknown;
-}
+import { Aggregate, AggregateRoot, EventHandler, UUID } from '@ocoda/event-sourcing';
+import { <%= hyphenToCapital(name) %>CreatedEvent } from '../events/<%= name %>.event';
 
-export class <%= hyphenToCapital(name) %> {
-  constructor(private readonly data: { id: string; props: <%= hyphenToCapital(name) %>Props }) {}
+export class <%= hyphenToCapital(name) %>Id extends UUID {}
 
-  public validate(): void {
-    return;
+@Aggregate({ streamName: '<%= name %>' })
+export class <%= hyphenToCapital(name) %> extends AggregateRoot {
+  public id: <%= hyphenToCapital(name) %>Id;
+
+  public static create(id: <%= hyphenToCapital(name) %>Id) {
+    const instance = new <%= hyphenToCapital(name) %>();
+    instance.applyEvent(
+      new <%= hyphenToCapital(name) %>CreatedEvent(id.value)
+    );
+    return instance;
   }
 
-  public static create(props: <%= hyphenToCapital(name) %>Props): <%= hyphenToCapital(name) %> {
-    const id = '';
-    return new <%= hyphenToCapital(name) %>({ id, props });
+  @EventHandler(<%= hyphenToCapital(name) %>CreatedEvent)
+  protected on<%= hyphenToCapital(name) %>CreatedEvent(event: <%= hyphenToCapital(name) %>CreatedEvent) {
+    this.id = <%= hyphenToCapital(name) %>Id.from(event.id);
   }
 }

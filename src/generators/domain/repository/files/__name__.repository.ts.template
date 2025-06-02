@@ -1,6 +1,7 @@
-
-import { <%= hyphenToCapital(name) %> } from '../aggregates/<%= name %>.aggregate';
+import { <%= hyphenToCapital(name) %>, <%= hyphenToCapital(name) %>Id } from '../aggregates/<%= name %>.aggregate';
 
 export abstract class <%= hyphenToCapital(name) %>Repository {
-  public abstract findOne(id: string): Promise<<%= hyphenToCapital(name) %>>;
+  abstract getById(id: <%= hyphenToCapital(name) %>Id): Promise<<%= hyphenToCapital(name) %>>;
+  abstract getByIds(ids: <%= hyphenToCapital(name) %>Id[]): Promise<<%= hyphenToCapital(name) %>[]>;
+  abstract save(instance: <%= hyphenToCapital(name) %>): Promise<void>;
 }

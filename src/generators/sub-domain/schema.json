@@ -49,6 +49,29 @@
       "description": "Do not add dependencies to `package.json`.",
       "type": "boolean",
       "default": true
+    },
+    "testEnvironment": {
+      "description": "The test environment for jest, for node applications this should stay as node unless doing DOM testing.",
+      "type": "string",
+      "enum": ["jsdom", "node"],
+      "default": "node"
+    },
+    "target": {
+      "description": "The ES target, Nest suggest using es2021 or higher.",
+      "type": "string",
+      "default": "es2021",
+      "enum": [
+        "es5",
+        "es6",
+        "esnext",
+        "es2015",
+        "es2016",
+        "es2017",
+        "es2018",
+        "es2019",
+        "es2020",
+        "es2021"
+      ]
     }
   },
   "required": ["name"]

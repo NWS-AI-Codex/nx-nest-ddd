@@ -1,0 +1,23 @@
+import { Module } from '@nestjs/common';
+import { EventSourcingModule } from '@ocoda/event-sourcing';
+import { <%= hyphenToCapital(name) %>Repository } from '@domain/repositories/<%= name %>.repository';
+import { <%= hyphenToCapital(name) %>RepositoryImpl } from '../repositories/<%= name %>.repository';
+import { <%= hyphenToCapital(name) %>SnapshotRepository } from '../repositories/<%= name %>.snapshot-repository';
+import { ormMappers } from '../orm-mappers';
+
+@Module({
+  imports: [EventSourcingModule.forFeature()],
+  providers: [
+    ...ormMappers,
+    <%= hyphenToCapital(name) %>SnapshotRepository,
+    {
+      provide: <%= hyphenToCapital(name) %>Repository,
+      useClass: <%= hyphenToCapital(name) %>RepositoryImpl,
+    },
+  ],
+  exports: [
+    ...ormMappers,
+    <%= hyphenToCapital(name) %>Repository,
+  ],
+})
+export class <%= hyphenToCapital(name) %>InfrastructureModule {}

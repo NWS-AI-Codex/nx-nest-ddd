@@ -1,0 +1,30 @@
+import { Injectable } from '@nestjs/common';
+import { ISnapshot, Snapshot, SnapshotRepository } from '@ocoda/event-sourcing';
+import { <%= hyphenToCapital(name) %>, <%= hyphenToCapital(name) %>Id } from '../aggregates/<%= name %>.aggregate';
+
+@Injectable()
+@Snapshot(<%= hyphenToCapital(name) %>, { name: '<%= name %>', interval: 5 })
+export class <%= hyphenToCapital(name) %>SnapshotRepository extends SnapshotRepository<<%= hyphenToCapital(name) %>> {
+  serialize(aggregate: <%= hyphenToCapital(name) %>): ISnapshot<<%= hyphenToCapital(name) %>> {
+    return {
+      id: aggregate.id.value,
+      // Add all properties that need to be serialized
+      // Example:
+      // name: aggregate.name.value,
+      // status: aggregate.status,
+      // createdAt: aggregate.createdAt?.toISOString(),
+    };
+  }
+
+  deserialize(snapshot: ISnapshot<<%= hyphenToCapital(name) %>>): <%= hyphenToCapital(name) %> {
+    const instance = new <%= hyphenToCapital(name) %>();
+    instance.id = <%= hyphenToCapital(name) %>Id.from(snapshot.id);
+    // Restore all properties from snapshot
+    // Example:
+    // instance.name = Name.fromString(snapshot.name);
+    // instance.status = snapshot.status;
+    // instance.createdAt = snapshot.createdAt ? new Date(snapshot.createdAt) : undefined;
+    
+    return instance;
+  }
+}

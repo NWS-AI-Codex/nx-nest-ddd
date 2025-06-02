@@ -1,14 +1,20 @@
-import { CommandHandler } from '@nestjs/cqrs';
-
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { <%= hyphenToCapital(name) %>, <%= hyphenToCapital(name) %>Id } from '@domain/aggregates/<%= name %>.aggregate';
+import { <%= hyphenToCapital(name) %>Repository } from '@domain/repositories/<%= name %>.repository';
 import { <%= hyphenToCapital(name) %>Command } from './<%= name %>.command';
 
 @CommandHandler(<%= hyphenToCapital(name) %>Command)
-export class <%= hyphenToCapital(name) %>CommandHandler {
-  constructor() {
-    // Initialize
-  }
+export class <%= hyphenToCapital(name) %>CommandHandler implements ICommandHandler<<%= hyphenToCapital(name) %>Command> {
+  constructor(
+    private readonly repository: <%= hyphenToCapital(name) %>Repository
+  ) {}
 
-  protected async handle(command: <%= hyphenToCapital(name) %>Command): Promise<unknown> {
-    return;
+  async execute(command: <%= hyphenToCapital(name) %>Command): Promise<string> {
+    const id = <%= hyphenToCapital(name) %>Id.from(command.id);
+    const instance = <%= hyphenToCapital(name) %>.create(id);
+    
+    await this.repository.save(instance);
+    
+    return id.value;
   }
 }

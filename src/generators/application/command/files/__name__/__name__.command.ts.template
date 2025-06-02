@@ -1,7 +1,10 @@
 export class <%= hyphenToCapital(name) %>Command {
-  public readonly props1: string;
+  constructor(
+    public readonly id: string,
+    public readonly data?: Record<string, unknown>
+  ) {}
 
-  constructor(props: <%= hyphenToCapital(name) %>Command) {
-    this.props1 = props.props1;
+  static create(id: string, data?: Record<string, unknown>): <%= hyphenToCapital(name) %>Command {
+    return new <%= hyphenToCapital(name) %>Command(id, data);
   }
 }

@@ -1,9 +1,31 @@
-export class <%= hyphenToCapital(name) %>VO {
- constructor(value: unknown) {
-    // Update value
+import { ValueObject } from '@ocoda/event-sourcing';
+
+interface <%= hyphenToCapital(name) %>Props {
+  value: string; // Update this type based on your needs
+}
+
+export class <%= hyphenToCapital(name) %> extends ValueObject {
+  private constructor(props: <%= hyphenToCapital(name) %>Props) {
+    super(props);
   }
 
-  protected validate(value: unknown): void {
-    // Validate the value
+  public static create(value: string): <%= hyphenToCapital(name) %> {
+    // Add your validation rules here
+    if (!value || value.length === 0) {
+      throw new Error('<%= name %> cannot be empty');
+    }
+
+    return new <%= hyphenToCapital(name) %>({ value });
+  }
+
+  get value(): string {
+    return this.props.value;
+  }
+
+  public equals(vo?: <%= hyphenToCapital(name) %>): boolean {
+    if (vo === null || vo === undefined) {
+      return false;
+    }
+    return this.value === vo.value;
   }
 }

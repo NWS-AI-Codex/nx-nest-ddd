@@ -1,0 +1,46 @@
+import { Injectable } from '@nestjs/common';
+import { EventStore, EventStream } from '@ocoda/event-sourcing';
+import { <%= hyphenToCapital(name) %>, <%= hyphenToCapital(name) %>Id } from '@domain/aggregates/<%= name %>.aggregate';
+import { <%= hyphenToCapital(name) %>Repository } from '@domain/repositories/<%= name %>.repository';
+import { <%= hyphenToCapital(name) %>NotFoundException } from '@domain/exceptions/<%= name %>-not-found.exception';
+import { <%= hyphenToCapital(name) %>SnapshotRepository } from './<%= name %>.snapshot-repository';
+
+@Injectable()
+export class <%= hyphenToCapital(name) %>RepositoryImpl extends <%= hyphenToCapital(name) %>Repository {
+  constructor(
+    private readonly eventStore: EventStore,
+    private readonly snapshotRepository: <%= hyphenToCapital(name) %>SnapshotRepository,
+  ) {
+    super();
+  }
+
+  async getById(id: <%= hyphenToCapital(name) %>Id): Promise<<%= hyphenToCapital(name) %>> {
+    const eventStream = EventStream.for<<%= hyphenToCapital(name) %>>(<%= hyphenToCapital(name) %>, id);
+    const instance = await this.snapshotRepository.load(id);
+    const eventCursor = this.eventStore.getEvents(eventStream, { fromVersion: instance.version + 1 });
+    await instance.loadFromHistory(eventCursor);
+
+    if (instance.version < 1) {
+      throw new <%= hyphenToCapital(name) %>NotFoundException(id.value);
+    }
+
+    return instance;
+  }
+
+  async getByIds(ids: <%= hyphenToCapital(name) %>Id[]): Promise<<%= hyphenToCapital(name) %>[]> {
+    const instances = await this.snapshotRepository.loadMany(ids);
+    for (const instance of instances) {
+      const eventStream = EventStream.for<<%= hyphenToCapital(name) %>>(<%= hyphenToCapital(name) %>, instance.id);
+      const eventCursor = this.eventStore.getEvents(eventStream, { fromVersion: instance.version + 1 });
+      await instance.loadFromHistory(eventCursor);
+    }
+    return instances;
+  }
+
+  async save(instance: <%= hyphenToCapital(name) %>): Promise<void> {
+    const events = instance.commit();
+    const stream = EventStream.for<<%= hyphenToCapital(name) %>>(<%= hyphenToCapital(name) %>, instance.id);
+    await this.eventStore.appendEvents(stream, instance.version, events);
+    await this.snapshotRepository.save(instance.id, instance);
+  }
+}
